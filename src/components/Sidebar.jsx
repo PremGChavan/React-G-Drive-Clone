@@ -13,6 +13,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import { db } from '../firebase';
 
 
 const SidebarContainer = styled.div`
@@ -122,70 +123,62 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  // const [url, setUrl] = useState("");
 
   const handleFile = e => {
     if( e.target.files[0] ) setFile( e.target.files[0] )
   }
 
+
   const handleUpload = async (e) => {
-  e.preventDefault();
-  if (!file) return alert("Please select a file to upload");
+    e.preventDefault();
 
-  setUploading(true);
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
 
-  try {
-    // Upload to Cloudinary
+    setUploading(true);
+
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "React_G_Drive_Clone");
+    formData.append('file', file);
+    formData.append('upload_preset', 'React_G_Drive_Clone'); 
 
-    const CloudinaryRes = await axios.post(
-      "https://api.cloudinary.com/v1_1/dixcl4uxd/upload",
+    try {
+    const res = await axios.post(
+      'https://api.cloudinary.com/v1_1/dixcl4uxd/image/upload',
       formData
     );
 
-    const imageUrl = CloudinaryRes.data.secure_url;
-    console.log(imageUrl);
+    const uploadedUrl = res.data.secure_url;
+    // setImageUrl(uploadedUrl);
 
-    await firebase.firestore().collection("uploads").add({
-      imageUrl,
-      uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+    await saveImgUrl(uploadedUrl, file);
 
-    alert("File uploaded and saved successfully");
+    setUploading(false);
     setFile(null);
-  } catch (e) {
-    console.error("Upload failed", e);
-    alert("Upload failed");
-  } finally {
+    setOpen(false)
+
+  } catch (err) {
+    alert('Upload error:', err);
     setUploading(false);
   }
-};
+  };
 
-
-  // const handleUpload = async (e) => {
-  //   e.preventDefault;
-
-  //   try {      
-  //     if(!file) return alert("Please Select any File")
+  const saveImgUrl = async (url, file) => {
+    try {
+      await db.collection('uploadedImages').add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        filename: file.name,
+        fileURL:url,
+        size: file.size,
+      })
+      console.log("Image url saved to firestore");
       
-  //     const ImageData = new FormData();
-  //     ImageData.append("file", file);
-  //     ImageData.append("upload_preset", "React_G_Drive_Clone");
-  //     ImageData.append("cloud_name", "dixcl4uxd")
-      
+    } catch (e) {
+      console.error("Error saving URL to Firestore:", e);
+    }
+  }
 
-  //     const { data } =  await axios.post("https://api.cloudinary.com/v1_1/dixcl4uxd/image/upload", ImageData);
-
-  //     console.log(data)
-  //     setUrl(data.secure_url)
-
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  // }
 
 
 
@@ -199,13 +192,14 @@ const Sidebar = () => {
               <h3>Select file you want to upload</h3>
             </ModalHeading>
             <ModalBody>
-              {uploading ? <UploadingPara>Uploading...</UploadingPara> : (
+              {uploading ? (
+                <UploadingPara>Uploading...</UploadingPara>
+              ) : (
                 <>
                   <input 
                     type="file" 
                     className='modal__file'
                     onChange={handleFile}
-                    // onChange={(e)=> (setFile(e.target.files[0]))}
                   />
                   <input type="submit" className='modal__submit' />
                 </>
