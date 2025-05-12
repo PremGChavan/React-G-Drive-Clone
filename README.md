@@ -1,12 +1,45 @@
-# React + Vite
+# Google Drive Clone 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully functional Google Drive clone built using **React (Vite)**, **Firebase** for authentication and real-time database, and **Cloudinary** for file uploads. Styled with **Tailwind CSS** for a modern and responsive UI.
 
-Currently, two official plugins are available:
+## 🔗 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👉 [Visit the hosted site](https://react-g-drive-clone.vercel.app/)
 
-## Expanding the ESLint configuration
+## 📸 Landing Page
+<table>
+  <tr>
+    <td align="center"><img src="public/Screenshot2.png" width="600"/><br>Login Page</td>
+    <td align="center"><img src="public/Screenshot1.png" width="600"/><br>Dashboard</td>
+  </tr>
+</table>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+- 🔐 Firebase Authentication (Login / Logout)
+- ☁️ Cloudinary File Upload
+- 📂 File Storage using Firebase Realtime Database
+- 📁 Folder structure (simulate directory-like experience)
+- 📎 View uploaded files
+- 🎨 Responsive UI with Tailwind CSS
+- ⚡ Built with Vite for fast development
+
+## 🔧 Tech Stack
+
+- **Frontend:** React + Vite
+- **Styling:** Tailwind CSS
+- **Authentication & Database:** Firebase
+- **File Uploads:** Cloudinary
+
+## 📦 Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/PremGChavan/React-G-Drive-Clone
+cd google-drive-clone 
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
