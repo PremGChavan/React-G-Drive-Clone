@@ -9,7 +9,7 @@ const LandingPage = ({ signIn }) => {
             alt="Logo"
             className="h-8 w-8"
           />
-          <span className="text-xl font-semibold text-gray-900">Disk</span>
+          <span className="text-xl font-semibold text-gray-900">Drive</span>
         </div>
         <button
           onClick={signIn}
